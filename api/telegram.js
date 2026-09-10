@@ -8,7 +8,9 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
 
 import { loadConfig } from '../src/config.js';
+import { safeErrorText } from '../src/errors.js';
 import { markUpdateSeen } from '../src/profiles/store.js';
+import { escapeHtml } from '../src/report/format.js';
 import { extractChatId, routeUpdate } from '../src/telegram/router.js';
 import { sendMessage } from '../src/telegram/api.js';
 
@@ -64,7 +66,7 @@ export default async function handler(request, response) {
   try {
     update = await readJsonBody(request);
   } catch (error) {
-    console.error('Тело запроса:', error.message);
+    console.error('Тело запроса:', error.name);
     response.status(200).json({ ok: true });
     return;
   }
@@ -88,8 +90,11 @@ export default async function handler(request, response) {
       return;
     }
 
-    if (update.update_id !== undefined) {
-      const isNew = await markUpdateSeen(config, update.update_id);
+    // update_id приходит из тела запроса и попадает в ключ Redis: берём только
+    // целое число, а не произвольную строку.
+    const updateId = Number(update.update_id);
+    if (Number.isSafeInteger(updateId)) {
+      const isNew = await markUpdateSeen(config, updateId);
       if (!isNew) {
         response.status(200).json({ ok: true });
         return;
@@ -98,11 +103,16 @@ export default async function handler(request, response) {
 
     await routeUpdate(config, update);
   } catch (error) {
-    // В лог уходит только тип и сообщение ошибки: тексты запросов и содержимое
-    // файлов клиента не логируются никогда.
-    console.error('Обработка update:', error.message);
-    await sendMessage(config.telegram.botToken, chatId, `Не получилось: ${error.message}`).catch(
-      (sendError) => console.error('Не удалось отправить сообщение об ошибке:', sendError.message),
+    // Сообщения библиотек могут содержать фрагменты разбираемого файла, то есть
+    // данные клиента. В лог и в чат уходит только текст, написанный нами.
+    const text = safeErrorText(error);
+    console.error('Обработка update:', text);
+    await sendMessage(
+      config.telegram.botToken,
+      chatId,
+      `Не получилось: ${escapeHtml(text)}`,
+    ).catch((sendError) =>
+      console.error('Не удалось отправить сообщение об ошибке:', sendError.name),
     );
   }
 

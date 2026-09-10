@@ -8,6 +8,8 @@
 
 const API_BASE = 'https://api.telegram.org';
 const REQUEST_TIMEOUT_MS = 30000;
+/** Путь файла подставляется в URL, поэтому «..» и прочие сюрпризы отсекаются. */
+const SAFE_FILE_PATH_RE = /^[A-Za-z0-9_./-]{1,255}$/;
 
 class TelegramApiError extends Error {
   constructor(method, description) {
@@ -67,6 +69,10 @@ export function getFile(token, fileId) {
  * @throws {Error} если файл больше разрешённого размера
  */
 export async function downloadFile(token, filePath, maxBytes) {
+  if (!SAFE_FILE_PATH_RE.test(filePath) || filePath.includes('..')) {
+    throw new Error('Telegram вернул неожиданный путь к файлу');
+  }
+
   const response = await fetch(`${API_BASE}/file/bot${token}/${filePath}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });

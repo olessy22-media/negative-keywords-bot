@@ -38,6 +38,10 @@ const HELP_TEXT = [
   'Бот ничего не меняет в рекламном кабинете — только предлагает.',
 ].join('\n');
 
+/** Slug приходит из callback_data, то есть снаружи: в ключ Redis он попадает
+ *  только после проверки на допустимые символы. */
+const SAFE_SLUG_RE = /^[a-z0-9-]{1,40}$/;
+
 function profileKeyboard(slugs, prefix) {
   return {
     inline_keyboard: slugs.map((slug) => [{ text: slug, callback_data: `${prefix}:${slug}` }]),
@@ -98,6 +102,12 @@ export async function handleDialogAnswer(config, chatId, token, text) {
   if (!state) return false;
 
   const question = PROFILE_QUESTIONS[state.step];
+  if (!question) {
+    // Состояние в Redis повреждено или устарело: начинаем заново, а не падаем.
+    await clearDialog(config, chatId);
+    return false;
+  }
+
   const nextState = {
     ...state,
     step: state.step + 1,
@@ -161,6 +171,11 @@ export async function handleCommand(config, chatId, token, text) {
  */
 export async function handleCallback(config, chatId, token, callbackQuery) {
   const [action, slug] = String(callbackQuery.data ?? '').split(':');
+
+  if (!SAFE_SLUG_RE.test(slug ?? '')) {
+    await answerCallbackQuery(token, callbackQuery.id, 'Некорректный выбор');
+    return;
+  }
 
   if (action === 'sel') {
     const profile = await getProfile(config, chatId, slug);

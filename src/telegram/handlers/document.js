@@ -12,6 +12,7 @@ import {
   formatReviewFile,
   formatSummary,
 } from '../../report/format.js';
+import { UserFacingError } from '../../errors.js';
 import { downloadFile, getFile, sendDocument, sendMessage } from '../api.js';
 
 const ACCEPTED_EXTENSION = /\.csv$/i;
@@ -46,6 +47,27 @@ async function resolveProfile(config, chatId, token) {
     return null;
   }
   return profile;
+}
+
+/**
+ * Разбирает CSV и переводит ошибки в безопасный текст. Экспортируется ради
+ * теста: именно здесь проходит граница между данными клиента и логами.
+ * Сообщения csv-parse могут содержать фрагмент разбираемой строки, то есть
+ * данные клиента, поэтому наружу они в исходном виде не выпускаются.
+ * @throws {UserFacingError}
+ */
+export function parseCsvSafely(content, maxRows) {
+  try {
+    return parseSearchTermsCsv(content, { maxRows });
+  } catch (error) {
+    if (error instanceof RangeError || /^(Не найдена|Файл пуст|В файле|Заголовки)/.test(error.message)) {
+      throw new UserFacingError(error.message, { cause: error });
+    }
+    throw new UserFacingError(
+      'Не удалось разобрать CSV. Проверьте, что файл выгружен как CSV (не «Excel CSV») и не редактировался.',
+      { cause: error },
+    );
+  }
 }
 
 /**
@@ -85,7 +107,7 @@ export async function handleDocument(config, chatId, document) {
   const file = await getFile(token, document.file_id);
   const content = await downloadFile(token, file.file_path, config.limits.maxFileBytes);
 
-  const parsed = parseSearchTermsCsv(content, { maxRows: config.limits.maxCsvRows });
+  const parsed = parseCsvSafely(content, config.limits.maxCsvRows);
   const report = await analyzeSearchTerms(parsed, profile, config);
   const stamp = new Date().toISOString().slice(0, 10);
 
