@@ -64,8 +64,16 @@ npm test
 ### Деплой на Vercel
 
 1. Скопируйте `.env.example` в `.env` и заполните — список переменных ниже.
-2. Задайте те же переменные в проекте Vercel: **Settings → Environment Variables**
-   (или `vercel env add <ИМЯ> production` для каждой).
+2. Привяжите каталог к проекту Vercel и перенесите переменные:
+
+   ```bash
+   npx vercel link
+   node scripts/push-env.js production
+   ```
+
+   Скрипт читает `.env` и отдаёт значения CLI напрямую: они не попадают ни на
+   экран, ни в историю команд. Альтернатива — вписать их руками в
+   **Settings → Environment Variables**.
 3. Задеплойте:
 
    ```bash

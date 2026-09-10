@@ -27,3 +27,7 @@ tmp/
 .idea/
 .vscode/
 *.swp
+
+# Vercel
+.vercel
+.env.local
