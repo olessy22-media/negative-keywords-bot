@@ -1,0 +1,28 @@
+# Секреты
+.env
+.env.*
+!.env.example
+
+# Данные клиентов - реальные выгрузки не попадают в репозиторий никогда
+data/
+*.csv
+!sample/*.csv
+
+# Зависимости и сборка
+node_modules/
+.vercel/
+dist/
+build/
+coverage/
+
+# Логи и временные файлы
+*.log
+npm-debug.log*
+.cache/
+tmp/
+
+# ОС и редакторы
+.DS_Store
+.idea/
+.vscode/
+*.swp
