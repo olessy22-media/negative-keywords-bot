@@ -1,0 +1,454 @@
+{
+  "$comment": "Справочник географии США для слоя правил. Гео из профиля проекта считается разрешённым, всё остальное — кандидат в минус. Сокращения из ambiguousAbbreviations отдельно не матчатся: иначе «near me» превратится в штат Мэн.",
+  "version": 1,
+  "states": [
+    {
+      "name": "Alabama",
+      "abbr": "AL"
+    },
+    {
+      "name": "Alaska",
+      "abbr": "AK"
+    },
+    {
+      "name": "Arizona",
+      "abbr": "AZ"
+    },
+    {
+      "name": "Arkansas",
+      "abbr": "AR"
+    },
+    {
+      "name": "California",
+      "abbr": "CA"
+    },
+    {
+      "name": "Colorado",
+      "abbr": "CO"
+    },
+    {
+      "name": "Connecticut",
+      "abbr": "CT"
+    },
+    {
+      "name": "Delaware",
+      "abbr": "DE"
+    },
+    {
+      "name": "Florida",
+      "abbr": "FL"
+    },
+    {
+      "name": "Georgia",
+      "abbr": "GA"
+    },
+    {
+      "name": "Hawaii",
+      "abbr": "HI"
+    },
+    {
+      "name": "Idaho",
+      "abbr": "ID"
+    },
+    {
+      "name": "Illinois",
+      "abbr": "IL"
+    },
+    {
+      "name": "Indiana",
+      "abbr": "IN"
+    },
+    {
+      "name": "Iowa",
+      "abbr": "IA"
+    },
+    {
+      "name": "Kansas",
+      "abbr": "KS"
+    },
+    {
+      "name": "Kentucky",
+      "abbr": "KY"
+    },
+    {
+      "name": "Louisiana",
+      "abbr": "LA"
+    },
+    {
+      "name": "Maine",
+      "abbr": "ME"
+    },
+    {
+      "name": "Maryland",
+      "abbr": "MD"
+    },
+    {
+      "name": "Massachusetts",
+      "abbr": "MA"
+    },
+    {
+      "name": "Michigan",
+      "abbr": "MI"
+    },
+    {
+      "name": "Minnesota",
+      "abbr": "MN"
+    },
+    {
+      "name": "Mississippi",
+      "abbr": "MS"
+    },
+    {
+      "name": "Missouri",
+      "abbr": "MO"
+    },
+    {
+      "name": "Montana",
+      "abbr": "MT"
+    },
+    {
+      "name": "Nebraska",
+      "abbr": "NE"
+    },
+    {
+      "name": "Nevada",
+      "abbr": "NV"
+    },
+    {
+      "name": "New Hampshire",
+      "abbr": "NH"
+    },
+    {
+      "name": "New Jersey",
+      "abbr": "NJ"
+    },
+    {
+      "name": "New Mexico",
+      "abbr": "NM"
+    },
+    {
+      "name": "New York",
+      "abbr": "NY"
+    },
+    {
+      "name": "North Carolina",
+      "abbr": "NC"
+    },
+    {
+      "name": "North Dakota",
+      "abbr": "ND"
+    },
+    {
+      "name": "Ohio",
+      "abbr": "OH"
+    },
+    {
+      "name": "Oklahoma",
+      "abbr": "OK"
+    },
+    {
+      "name": "Oregon",
+      "abbr": "OR"
+    },
+    {
+      "name": "Pennsylvania",
+      "abbr": "PA"
+    },
+    {
+      "name": "Rhode Island",
+      "abbr": "RI"
+    },
+    {
+      "name": "South Carolina",
+      "abbr": "SC"
+    },
+    {
+      "name": "South Dakota",
+      "abbr": "SD"
+    },
+    {
+      "name": "Tennessee",
+      "abbr": "TN"
+    },
+    {
+      "name": "Texas",
+      "abbr": "TX"
+    },
+    {
+      "name": "Utah",
+      "abbr": "UT"
+    },
+    {
+      "name": "Vermont",
+      "abbr": "VT"
+    },
+    {
+      "name": "Virginia",
+      "abbr": "VA"
+    },
+    {
+      "name": "Washington",
+      "abbr": "WA"
+    },
+    {
+      "name": "West Virginia",
+      "abbr": "WV"
+    },
+    {
+      "name": "Wisconsin",
+      "abbr": "WI"
+    },
+    {
+      "name": "Wyoming",
+      "abbr": "WY"
+    }
+  ],
+  "cities": [
+    "Abilene",
+    "Akron",
+    "Albuquerque",
+    "Alexandria",
+    "Allentown",
+    "Amarillo",
+    "Anaheim",
+    "Anchorage",
+    "Ann Arbor",
+    "Arlington",
+    "Athens",
+    "Atlanta",
+    "Augusta",
+    "Aurora",
+    "Austin",
+    "Bakersfield",
+    "Baltimore",
+    "Baton Rouge",
+    "Beaumont",
+    "Bellevue",
+    "Bentonville",
+    "Berkeley",
+    "Birmingham",
+    "Blue Springs",
+    "Boise",
+    "Boston",
+    "Branson",
+    "Bridgeport",
+    "Brownsville",
+    "Buffalo",
+    "Cape Coral",
+    "Carrollton",
+    "Cary",
+    "Cedar Rapids",
+    "Chandler",
+    "Charleston",
+    "Charlotte",
+    "Chattanooga",
+    "Chesapeake",
+    "Chicago",
+    "Chula Vista",
+    "Cincinnati",
+    "Clarksville",
+    "Cleveland",
+    "Colorado Springs",
+    "Columbia",
+    "Columbus",
+    "Concord",
+    "Coral Springs",
+    "Corona",
+    "Corpus Christi",
+    "Dallas",
+    "Dayton",
+    "Denton",
+    "Denver",
+    "Des Moines",
+    "Detroit",
+    "Durham",
+    "El Paso",
+    "Elizabeth",
+    "Elk Grove",
+    "Escondido",
+    "Eugene",
+    "Fayetteville",
+    "Fontana",
+    "Fort Collins",
+    "Fort Lauderdale",
+    "Fort Wayne",
+    "Fort Worth",
+    "Fremont",
+    "Fresno",
+    "Frisco",
+    "Fullerton",
+    "Gainesville",
+    "Garden Grove",
+    "Garland",
+    "Gilbert",
+    "Glendale",
+    "Grand Prairie",
+    "Grand Rapids",
+    "Greensboro",
+    "Hampton",
+    "Hayward",
+    "Henderson",
+    "Hialeah",
+    "Hollywood",
+    "Honolulu",
+    "Houston",
+    "Huntington Beach",
+    "Huntsville",
+    "Independence",
+    "Indianapolis",
+    "Irvine",
+    "Irving",
+    "Jackson",
+    "Jacksonville",
+    "Jersey City",
+    "Joliet",
+    "Joplin",
+    "Kansas City",
+    "Kent",
+    "Killeen",
+    "Knoxville",
+    "Lakewood",
+    "Lancaster",
+    "Laredo",
+    "Las Vegas",
+    "Lexington",
+    "Lincoln",
+    "Little Rock",
+    "Long Beach",
+    "Los Angeles",
+    "Louisville",
+    "Lubbock",
+    "Macon",
+    "Madison",
+    "McAllen",
+    "McKinney",
+    "Memphis",
+    "Mesa",
+    "Mesquite",
+    "Miami",
+    "Midland",
+    "Milwaukee",
+    "Minneapolis",
+    "Miramar",
+    "Mobile",
+    "Modesto",
+    "Montgomery",
+    "Moreno Valley",
+    "Murfreesboro",
+    "Naperville",
+    "Nashville",
+    "New Haven",
+    "New Orleans",
+    "New York",
+    "Newark",
+    "Newport News",
+    "Norfolk",
+    "Norman",
+    "Oakland",
+    "Oceanside",
+    "Oklahoma City",
+    "Olathe",
+    "Omaha",
+    "Ontario",
+    "Orange",
+    "Orlando",
+    "Overland Park",
+    "Oxnard",
+    "Palmdale",
+    "Pasadena",
+    "Paterson",
+    "Pembroke Pines",
+    "Peoria",
+    "Philadelphia",
+    "Phoenix",
+    "Pittsburgh",
+    "Plano",
+    "Pomona",
+    "Portland",
+    "Providence",
+    "Raleigh",
+    "Rancho Cucamonga",
+    "Reno",
+    "Richmond",
+    "Riverside",
+    "Rochester",
+    "Rockford",
+    "Rogers",
+    "Roseville",
+    "Round Rock",
+    "Sacramento",
+    "Saint Charles",
+    "Saint Louis",
+    "Saint Paul",
+    "Saint Petersburg",
+    "Salem",
+    "Salinas",
+    "Salt Lake City",
+    "San Antonio",
+    "San Bernardino",
+    "San Diego",
+    "San Francisco",
+    "San Jose",
+    "Santa Ana",
+    "Santa Clara",
+    "Santa Clarita",
+    "Santa Rosa",
+    "Savannah",
+    "Scottsdale",
+    "Seattle",
+    "Shreveport",
+    "Simi Valley",
+    "Sioux Falls",
+    "Spokane",
+    "Springfield",
+    "Stamford",
+    "Sterling Heights",
+    "Stockton",
+    "Sunnyvale",
+    "Surprise",
+    "Syracuse",
+    "Tacoma",
+    "Tallahassee",
+    "Tampa",
+    "Tempe",
+    "Thornton",
+    "Thousand Oaks",
+    "Toledo",
+    "Topeka",
+    "Torrance",
+    "Tucson",
+    "Tulsa",
+    "Vallejo",
+    "Vancouver",
+    "Victorville",
+    "Virginia Beach",
+    "Visalia",
+    "Waco",
+    "Warren",
+    "Wichita",
+    "Wilmington",
+    "Winston Salem",
+    "Worcester",
+    "Yonkers"
+  ],
+  "ambiguousAbbreviations": [
+    "AL",
+    "CO",
+    "DC",
+    "DE",
+    "HI",
+    "IA",
+    "ID",
+    "IN",
+    "LA",
+    "MA",
+    "ME",
+    "MI",
+    "MO",
+    "NE",
+    "OH",
+    "OK",
+    "OR",
+    "PA"
+  ]
+}

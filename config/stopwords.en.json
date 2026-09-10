@@ -1,0 +1,97 @@
+{
+  "$comment": "Словарь мусорных запросов. Язык английский: аккаунты американские. Файл пополняется без правки кода. confidence high — слово идёт в минус-слова; medium — уходит в блок «сомнительные», решает человек. scope account — универсальный мусор для общего минус-списка аккаунта; campaign — на уровень кампании.",
+  "version": 1,
+  "groups": [
+    {
+      "root": "free",
+      "scope": "account",
+      "confidence": "high",
+      "reason": "ищут бесплатно — платить не собираются",
+      "phrases": ["free", "for free", "no cost", "gratis", "freebie", "free of charge"]
+    },
+    {
+      "root": "diy",
+      "scope": "account",
+      "confidence": "high",
+      "reason": "хотят сделать сами, а не заказать",
+      "phrases": ["diy", "do it yourself", "how to make", "how to build", "how to install", "make your own", "build your own", "homemade"]
+    },
+    {
+      "root": "jobs",
+      "scope": "account",
+      "confidence": "high",
+      "reason": "ищут работу, а не услугу",
+      "phrases": ["jobs", "job", "career", "careers", "hiring", "vacancy", "vacancies", "employment", "apprenticeship", "internship"]
+    },
+    {
+      "root": "salary",
+      "scope": "account",
+      "confidence": "high",
+      "reason": "интересуются зарплатами — соискатели",
+      "phrases": ["salary", "salaries", "pay rate", "hourly wage", "how much do", "how much does a"]
+    },
+    {
+      "root": "resume",
+      "scope": "account",
+      "confidence": "high",
+      "reason": "соискатели: резюме и отзывы сотрудников",
+      "phrases": ["resume", "glassdoor", "indeed com", "employee reviews", "reviews of employees", "work at"]
+    },
+    {
+      "root": "download",
+      "scope": "account",
+      "confidence": "high",
+      "reason": "ищут файл, а не покупку",
+      "phrases": ["download", "downloads", "pdf", "template", "templates", "printable", "blueprint", "blueprints", "torrent", "crack"]
+    },
+    {
+      "root": "wikipedia",
+      "scope": "account",
+      "confidence": "high",
+      "reason": "информационный запрос без коммерческого намерения",
+      "phrases": ["wikipedia", "wiki", "definition", "meaning of", "what is a", "reddit", "quora", "youtube", "images", "clipart"]
+    },
+    {
+      "root": "used",
+      "scope": "campaign",
+      "confidence": "high",
+      "reason": "ищут бывшее в употреблении",
+      "phrases": ["used", "second hand", "secondhand", "pre owned", "preowned", "refurbished", "salvage", "scrap", "craigslist"]
+    },
+    {
+      "root": "wholesale",
+      "scope": "campaign",
+      "confidence": "high",
+      "reason": "оптовый или посреднический запрос",
+      "phrases": ["wholesale", "wholesaler", "bulk order", "distributor", "distributors", "dropship", "dropshipping", "alibaba"]
+    },
+    {
+      "root": "course",
+      "scope": "account",
+      "confidence": "high",
+      "reason": "ищут обучение, а не услугу",
+      "phrases": ["course", "courses", "training", "certification", "classes", "school", "tutorial", "tutorials", "lessons"]
+    },
+    {
+      "root": "cheap",
+      "scope": "campaign",
+      "confidence": "medium",
+      "reason": "дешёвый ценовой сегмент — минусовать, только если это не ваш сегмент",
+      "phrases": ["cheap", "cheapest", "clearance", "discounted", "bargain", "budget", "under 100", "under 50", "dirt cheap"]
+    },
+    {
+      "root": "rental",
+      "scope": "campaign",
+      "confidence": "medium",
+      "reason": "аренда вместо покупки — минусовать, если не сдаёте в аренду",
+      "phrases": ["rental", "rentals", "for rent", "rent a", "lease", "leasing"]
+    },
+    {
+      "root": "repair",
+      "scope": "campaign",
+      "confidence": "medium",
+      "reason": "ремонт вместо покупки — минусовать, если не ремонтируете",
+      "phrases": ["repair", "repairs", "fix", "fixing", "restoration", "refinishing", "replacement parts", "spare parts"]
+    }
+  ]
+}

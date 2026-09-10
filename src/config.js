@@ -41,15 +41,53 @@ function parseChatIds(raw) {
     .filter(Boolean);
 }
 
-let cached = null;
+let cachedFull = null;
+let cachedAnalysis = null;
 
 /**
- * Собирает и проверяет конфигурацию. Fail-fast: при нехватке обязательной
- * переменной бросает ошибку со списком всего, чего не хватает.
- * @returns {object} готовая конфигурация
+ * Часть конфигурации, нужная для разбора файла: она не зависит ни от Telegram,
+ * ни от Redis, поэтому локальный прогон на CSV не требует их секретов.
+ * @returns {object}
+ */
+export function loadAnalysisConfig() {
+  if (cachedAnalysis) return cachedAnalysis;
+
+  cachedAnalysis = {
+    ai: {
+      // Ключа может не быть: бот обязан работать и без смыслового слоя.
+      apiKey: process.env.GEMINI_API_KEY || '',
+      model: process.env.GEMINI_MODEL || DEFAULTS.GEMINI_MODEL,
+      maxTermsToAi: readNumber('MAX_TERMS_TO_AI', DEFAULTS.MAX_TERMS_TO_AI),
+      batchSize: readNumber('AI_BATCH_SIZE', DEFAULTS.AI_BATCH_SIZE),
+      timeoutMs: readNumber('AI_TIMEOUT_MS', DEFAULTS.AI_TIMEOUT_MS),
+    },
+    analysis: {
+      minSpendForMoneyFlag: readNumber(
+        'MIN_SPEND_FOR_MONEY_FLAG',
+        DEFAULTS.MIN_SPEND_FOR_MONEY_FLAG,
+      ),
+    },
+    limits: {
+      maxFileBytes: readNumber('MAX_FILE_BYTES', DEFAULTS.MAX_FILE_BYTES),
+      maxCsvRows: readNumber('MAX_CSV_ROWS', DEFAULTS.MAX_CSV_ROWS),
+      dialogTtlSeconds: readNumber('DIALOG_TTL_SECONDS', DEFAULTS.DIALOG_TTL_SECONDS),
+      updateDedupeTtlSeconds: readNumber(
+        'UPDATE_DEDUPE_TTL_SECONDS',
+        DEFAULTS.UPDATE_DEDUPE_TTL_SECONDS,
+      ),
+    },
+  };
+
+  return cachedAnalysis;
+}
+
+/**
+ * Полная конфигурация бота. Fail-fast: при нехватке обязательной переменной
+ * бросает ошибку со списком всего, чего не хватает.
+ * @returns {object}
  */
 export function loadConfig() {
-  if (cached) return cached;
+  if (cachedFull) return cachedFull;
 
   const missing = REQUIRED_VARS.filter((name) => !process.env[name]);
   if (missing.length > 0) {
@@ -64,7 +102,7 @@ export function loadConfig() {
     throw new Error('ALLOWED_CHAT_IDS задан, но пуст: белый список не может быть пустым.');
   }
 
-  cached = {
+  cachedFull = {
     telegram: {
       botToken: process.env.TELEGRAM_BOT_TOKEN,
       webhookSecret: process.env.TELEGRAM_WEBHOOK_SECRET,
@@ -74,29 +112,14 @@ export function loadConfig() {
       url: process.env.UPSTASH_REDIS_REST_URL,
       token: process.env.UPSTASH_REDIS_REST_TOKEN,
     },
-    ai: {
-      // Ключа может не быть: бот обязан работать и без смыслового слоя.
-      apiKey: process.env.GEMINI_API_KEY || '',
-      model: process.env.GEMINI_MODEL || DEFAULTS.GEMINI_MODEL,
-      maxTermsToAi: readNumber('MAX_TERMS_TO_AI', DEFAULTS.MAX_TERMS_TO_AI),
-      batchSize: readNumber('AI_BATCH_SIZE', DEFAULTS.AI_BATCH_SIZE),
-      timeoutMs: readNumber('AI_TIMEOUT_MS', DEFAULTS.AI_TIMEOUT_MS),
-    },
-    analysis: {
-      minSpendForMoneyFlag: readNumber('MIN_SPEND_FOR_MONEY_FLAG', DEFAULTS.MIN_SPEND_FOR_MONEY_FLAG),
-    },
-    limits: {
-      maxFileBytes: readNumber('MAX_FILE_BYTES', DEFAULTS.MAX_FILE_BYTES),
-      maxCsvRows: readNumber('MAX_CSV_ROWS', DEFAULTS.MAX_CSV_ROWS),
-      dialogTtlSeconds: readNumber('DIALOG_TTL_SECONDS', DEFAULTS.DIALOG_TTL_SECONDS),
-      updateDedupeTtlSeconds: readNumber('UPDATE_DEDUPE_TTL_SECONDS', DEFAULTS.UPDATE_DEDUPE_TTL_SECONDS),
-    },
+    ...loadAnalysisConfig(),
   };
 
-  return cached;
+  return cachedFull;
 }
 
 /** Сбрасывает кеш конфигурации. Нужен только тестам. */
 export function resetConfigCache() {
-  cached = null;
+  cachedFull = null;
+  cachedAnalysis = null;
 }

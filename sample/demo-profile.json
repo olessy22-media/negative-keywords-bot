@@ -1,0 +1,10 @@
+{
+  "$comment": "Демо-профиль нейтральной ниши для sample/search-terms-sample.csv. Профили реальных клиентов живут в Redis и в репозиторий не попадают.",
+  "slug": "demo-flowers",
+  "name": "Демо: доставка цветов",
+  "sells": "Same-day flower delivery and custom bouquets for weddings and events",
+  "notDoing": "не продаём искусственные цветы, не работаем оптом, не сдаём в аренду декор, не нанимаем через рекламу",
+  "geo": ["Springfield, MO", "Branson, MO"],
+  "ownBrand": "Bloomline",
+  "competitors": ["1-800-Flowers", "FTD", "Teleflora", "ProFlowers"]
+}
