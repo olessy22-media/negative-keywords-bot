@@ -90,6 +90,11 @@ npm test
 
 > Один бот — один вебхук. `setWebhook` отключит предыдущую интеграцию этого бота, если она была.
 
+> **Deployment Protection в Vercel должна быть выключена для production.** Telegram не умеет
+> проходить авторизацию Vercel и будет получать 401 на каждый запрос. В настройках проекта:
+> **Settings → Deployment Protection → Vercel Authentication → Only Preview Deployments**.
+> Эндпоинт при этом не остаётся открытым: его закрывают секретный заголовок и белый список `chat_id`.
+
 ### Работа с ботом
 
 | Команда | Что делает |

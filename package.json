@@ -6,7 +6,7 @@
   "description": "Telegram-бот: разбор отчёта «Поисковые запросы» Google Ads и подготовка минус-слов по кампаниям",
   "license": "MIT",
   "engines": {
-    "node": ">=20"
+    "node": "24.x"
   },
   "scripts": {
     "test": "node --test test/*.test.js",
