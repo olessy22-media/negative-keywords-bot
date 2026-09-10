@@ -1,0 +1,21 @@
+{
+  "name": "negative-keywords-bot",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Telegram-бот: разбор отчёта «Поисковые запросы» Google Ads и подготовка минус-слов по кампаниям",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "analyze": "node scripts/analyze-local.js",
+    "set-webhook": "node scripts/set-webhook.js"
+  },
+  "dependencies": {
+    "@google/genai": "^2.21.0",
+    "@upstash/redis": "^1.38.4",
+    "csv-parse": "^7.0.2"
+  }
+}
