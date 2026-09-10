@@ -21,6 +21,9 @@ import {
   formatReviewFile,
   formatSummary,
 } from '../src/report/format.js';
+import { loadEnvFile } from './load-env-file.js';
+
+loadEnvFile();
 
 function parseArgs(argv) {
   const positional = [];

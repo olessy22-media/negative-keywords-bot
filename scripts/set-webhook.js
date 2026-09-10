@@ -7,17 +7,20 @@
  *   node scripts/set-webhook.js --info
  *   node scripts/set-webhook.js --delete
  *
- * Токен и секрет берутся из окружения и на экран не выводятся.
+ * Токен и секрет берутся из .env (или из окружения) и на экран не выводятся.
  */
 
 import process from 'node:process';
+
+import { loadEnvFile } from './load-env-file.js';
+
+loadEnvFile();
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const secret = process.env.TELEGRAM_WEBHOOK_SECRET;
 
 if (!token || !secret) {
-  console.error('Нужны переменные окружения TELEGRAM_BOT_TOKEN и TELEGRAM_WEBHOOK_SECRET.');
-  console.error('Локально: source .env или env $(grep -v "^#" .env | xargs) node scripts/set-webhook.js ...');
+  console.error('Нужны TELEGRAM_BOT_TOKEN и TELEGRAM_WEBHOOK_SECRET — заполните .env по образцу .env.example.');
   process.exit(1);
 }
 

@@ -52,6 +52,9 @@ npm install
 node scripts/analyze-local.js sample/search-terms-sample.csv sample/demo-profile.json --out ./out
 ```
 
+Если в `.env` задан `GEMINI_API_KEY`, локальный прогон использует и смысловой слой;
+без ключа отрабатывает только слой правил.
+
 В `sample/` лежит синтетический демо-набор в нейтральной нише: выгрузка того же формата и
 профиль проекта к ней. На нём бот проходит полный путь без единого реального аккаунта.
 
@@ -86,7 +89,8 @@ npm test
    node scripts/set-webhook.js https://<ваш-проект>.vercel.app/api/telegram
    ```
 
-   Проверить: `node scripts/set-webhook.js --info`. Снять: `--delete`.
+   Токен и секрет скрипт берёт из `.env`, в аргументы командной строки они не
+   попадают. Проверить: `node scripts/set-webhook.js --info`. Снять: `--delete`.
 
 > Один бот — один вебхук. `setWebhook` отключит предыдущую интеграцию этого бота, если она была.
 
