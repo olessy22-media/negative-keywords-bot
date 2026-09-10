@@ -6,31 +6,35 @@
 const MAX_FIELD_LENGTH = 500;
 const MAX_LIST_ITEMS = 30;
 
-/** Вопросы диалога /newproject в порядке задавания. */
+/**
+ * Вопросы диалога /newproject в порядке задавания. Их ровно четыре — столько
+ * полей в профиле. Имя проекта не спрашивается: оно берётся из аргумента
+ * команды, а без аргумента выводится из первого ответа.
+ */
 export const PROFILE_QUESTIONS = [
   {
-    field: 'name',
-    text: '1/5. Как назовём проект? Короткое имя для списка, например «Цветы, поиск US».',
-  },
-  {
     field: 'sells',
-    text: '2/5. Что продаём? Коротко: услуги или товары, на английском — так их видит модель.',
+    text:
+      '1/4. Что продаём? Коротко, на английском — этот текст читает модель.\n' +
+      'Например: «same-day flower delivery and custom bouquets».',
   },
   {
     field: 'notDoing',
     text:
-      '3/5. Чего НЕ делаем? Самое важное поле. Например: «не работаем с физлицами», ' +
-      '«не продаём б/у», «только на заказ».',
+      '2/4. Чего НЕ делаем? Самое важное поле — от него зависит точность разбора.\n' +
+      'Например: «не работаем с физлицами», «не продаём б/у», «только на заказ».',
   },
   {
     field: 'geo',
-    text: '4/5. География работы — города и штаты через запятую. Например: «Springfield, MO, Branson, MO».',
+    text:
+      '3/4. География работы: города и штаты через запятую.\n' +
+      'Например: «Springfield MO, Branson MO». Если гео не важно — поставьте прочерк.',
   },
   {
     field: 'brands',
     text:
-      '5/5. Бренды через запятую: сначала свой, затем конкуренты. ' +
-      'Например: «Bloomline, FTD, Teleflora». Если своего бренда в запросах нет — поставьте прочерк первым.',
+      '4/4. Бренды через запятую: сначала свой, потом конкуренты.\n' +
+      'Например: «Bloomline, FTD, Teleflora». Если своего бренда в запросах нет — прочерк первым.',
   },
 ];
 
@@ -50,21 +54,37 @@ function toList(value) {
 }
 
 /**
+ * Разбирает ответ «свой бренд, затем конкуренты».
+ * Позиция важна: прочерк на первом месте означает «своего бренда нет»,
+ * а не «первый конкурент — это мой бренд».
+ * @param {string} value
+ * @returns {{ownBrand: string, competitors: string[]}}
+ */
+function splitBrands(value) {
+  const parts = String(value ?? '').split(',').map((item) => item.trim());
+  const isBlank = (item) => !item || item === '-' || item === '—';
+  return {
+    ownBrand: isBlank(parts[0]) ? '' : trimField(parts[0]),
+    competitors: parts.slice(1).filter((item) => !isBlank(item)).map(trimField).slice(0, MAX_LIST_ITEMS),
+  };
+}
+
+/**
  * Приводит профиль к предсказуемой форме. Данные приходят из диалога и из
  * Redis, поэтому проверяются на границе, а не в местах использования.
  * @param {object} raw
  * @returns {object}
  */
 export function normalizeProfile(raw) {
-  const brands = toList(raw?.brands ?? []);
+  const brands = splitBrands(raw?.brands);
   return {
     slug: trimField(raw?.slug),
     name: trimField(raw?.name) || 'Без названия',
     sells: trimField(raw?.sells),
     notDoing: trimField(raw?.notDoing),
     geo: toList(raw?.geo),
-    ownBrand: trimField(raw?.ownBrand ?? brands[0] ?? ''),
-    competitors: raw?.competitors ? toList(raw.competitors) : brands.slice(1),
+    ownBrand: trimField(raw?.ownBrand ?? '') || brands.ownBrand,
+    competitors: raw?.competitors ? toList(raw.competitors) : brands.competitors,
     createdAt: trimField(raw?.createdAt) || new Date().toISOString(),
   };
 }
