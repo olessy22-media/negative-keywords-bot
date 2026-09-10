@@ -79,15 +79,18 @@ export async function analyzeSearchTerms(parsed, profile, config, deps = {}) {
     unresolved.push({ ...term, ruleHit: hit ?? null });
   }
 
-  const forAi = [...unresolved].sort(byMoneyThenImpressions).slice(0, config.ai.maxTermsToAi);
-  const aiResult = await classify(
-    forAi.map((term) => term.searchTerm),
-    profile,
-    config.ai,
-  );
+  // Один и тот же запрос встречается в разных кампаниях: в модель он уходит
+  // один раз, а вердикт применяется ко всем его вхождениям.
+  const uniqueTerms = [
+    ...new Set([...unresolved].sort(byMoneyThenImpressions).map((term) => term.searchTerm)),
+  ].slice(0, config.ai.maxTermsToAi);
 
+  const aiResult = await classify(uniqueTerms, profile, config.ai);
+
+  let withoutVerdict = 0;
   for (const term of unresolved) {
     const verdict = aiResult.verdicts.get(term.searchTerm);
+    if (!verdict) withoutVerdict += 1;
 
     if (verdict?.verdict === 'irrelevant' && verdict.negativeRoot) {
       candidates.push({
@@ -165,8 +168,8 @@ export async function analyzeSearchTerms(parsed, profile, config, deps = {}) {
       available: aiResult.available,
       partial: aiResult.partial,
       error: aiResult.error,
-      sentCount: aiResult.available ? forAi.length : 0,
-      skippedCount: unresolved.length - forAi.length,
+      sentCount: aiResult.available ? uniqueTerms.length : 0,
+      skippedCount: aiResult.available ? withoutVerdict : 0,
     },
   };
 }

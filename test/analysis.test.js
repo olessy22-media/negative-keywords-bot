@@ -198,3 +198,34 @@ test('расход по скрытым запросам попадает в от
   const report = await analyzeSearchTerms(parsed, PROFILE, CONFIG);
   assert.equal(report.hiddenTerms.cost, 542.72);
 });
+
+test('одинаковый запрос из разных кампаний уходит в модель один раз', async () => {
+  const parsed = parsedFrom([
+    term({ searchTerm: 'flower delivery near me', campaign: 'Search | Delivery', cost: 40 }),
+    term({ searchTerm: 'flower delivery near me', campaign: 'Search | Weddings', cost: 25 }),
+    term({ searchTerm: 'anniversary flowers', campaign: 'Search | Delivery', cost: 10 }),
+  ]);
+
+  const sentBatches = [];
+  const classify = async (terms) => {
+    sentBatches.push(terms);
+    return {
+      available: true,
+      partial: false,
+      error: '',
+      verdicts: new Map(
+        terms.map((text) => [text, { term: text, verdict: 'relevant', reason: 'целевой', negativeRoot: '' }]),
+      ),
+    };
+  };
+
+  const report = await analyzeSearchTerms(parsed, PROFILE, CONFIG, { classify });
+
+  assert.deepEqual(sentBatches[0], ['flower delivery near me', 'anniversary flowers']);
+  assert.equal(report.ai.sentCount, 2, 'дубль в модель не отправлялся');
+  assert.equal(
+    report.relevantNoConversions.filter((item) => item.searchTerm === 'flower delivery near me').length,
+    2,
+    'вердикт применён к обоим вхождениям запроса',
+  );
+});
